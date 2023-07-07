@@ -43,10 +43,9 @@ class Main {
 
 		mute('dirArr.length: ${dirArr.length}', 1);
 		mute('fileArr.length: ${fileArr.length}', 1);
-		// mute('fileArr.length: ${fileArr.length / 4}', 1);
 		mute('ignoreArr: $ignoreArr', 1);
 
-		info('CONVERT');
+		info('GET STATS');
 		// do something clever
 		statsFiles();
 
@@ -202,7 +201,7 @@ class Main {
 				}
 			}
 		} else {
-			// warn('${Emoji.x} "$directory" does not exists');
+			warn('${Emoji.x} "$directory" does not exists');
 		}
 	}
 
