@@ -1,0 +1,8 @@
+--library buddy
+-cp src
+# --main Main
+--run Main
+# -debug
+-dce full
+-D analyzer-optimize
+--interp
