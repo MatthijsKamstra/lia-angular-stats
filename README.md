@@ -2,6 +2,8 @@
 
 Some stats of an Angular project
 
+![](icon.png)
+
 ## how it works
 
 convert folders
@@ -22,13 +24,15 @@ haxe build_interp.hxml -i _testme/one/file.service.ts
 
 ```
 ----------------------------------------------------
-Lia-angular-specs (0.0.1)
+Lia-angular-stats (0.0.1)
 
-  --version / -v        : version number
-  --help / -h           : show this help
-  --in / -i             : path to project folder
-  --out / -o            : write readme (WIP)
-  --force / -f          : force overwrite
-  --dryrun / -d         : run without writing files
+  --version / -v	: version number
+  --help / -h		: show this help
+  --in / -i			: path to project folder
+  --out / -o		: write readme (WIP)
+  --force / -f		: force overwrite
+  --dryrun / -d		: run without writing files
+  --basic / -b		: test without content
+  --debug			: write test with some extra debug information
 ----------------------------------------------------
 ```

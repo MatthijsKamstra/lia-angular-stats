@@ -1,3 +1,5 @@
+import eval.luv.SockAddr.SocketType;
+import AST.SortedObj;
 import logger.Logger;
 import const.Config;
 import haxe.io.Path;
@@ -12,6 +14,8 @@ class Main {
 
 	var startTime:Date;
 	var endTime:Date;
+
+	var sortedArr:SortedObj = {};
 
 	public function new(?args:Array<String>) {
 		// Sys.command('clear'); // will produce a `TERM environment variable not set.`
@@ -44,6 +48,7 @@ class Main {
 
 		info('CONVERT');
 		// do something clever
+		statsFiles();
 
 		// check time again
 		endTime = Date.now();
@@ -54,6 +59,64 @@ class Main {
 
 	function checkAngular() {
 		info('[WIP] Check for angular.json in the root of the folder');
+	}
+
+	function statsFiles() {
+		info('Stats Files');
+		sortedArr = {
+			components_ts: [],
+			components_html: [],
+			components_scss: [],
+			components_spec: [],
+			services_ts: [],
+			services_spec: [],
+			typescript: [],
+			html: [],
+		};
+		for (i in 0...fileArr.length) {
+			var file = fileArr[i];
+			// Components
+			if (file.indexOf('.component.ts') != -1) {
+				// mute('Stats Component TypeScript: `${file.split('/src')[1]}`', 1);
+				sortedArr.components_ts.push(file);
+			}
+			if (file.indexOf('.component.html') != -1) {
+				// mute('Stats Component HTML: `${file.split('/src')[1]}`', 1);
+				sortedArr.components_html.push(file);
+			}
+			if (file.indexOf('.component.scss') != -1) {
+				// mute('Stats Component scss: `${file.split('/src')[1]}`', 1);
+				sortedArr.components_scss.push(file);
+			}
+			if (file.indexOf('.component.spec.ts') != -1) {
+				// mute('Stats Component Test TypeScript: `${file.split('/src')[1]}`', 1);
+				sortedArr.components_spec.push(file);
+			}
+			// Services
+			if (file.indexOf('.service.ts') != -1) {
+				// mute('Stats Service TypeScript: `${file.split('/src')[1]}`', 1);
+				sortedArr.services_ts.push(file);
+			}
+			if (file.indexOf('.service.spec.ts') != -1) {
+				// mute('Stats Service Test TypeScript: `${file.split('/src')[1]}`', 1);
+				sortedArr.services_spec.push(file);
+			}
+			// TypeScript and HTML
+			if (file.indexOf('.ts') != -1) {
+				// mute('Stats Typescript: `${file.split('/src')[1]}`', 1);
+				sortedArr.typescript.push(file);
+			}
+			if (file.indexOf('.html') != -1) {
+				// mute('Stats HTML: `${file.split('/src')[1]}`', 1);
+				sortedArr.html.push(file);
+			}
+		}
+		info('sortedArr.components_ts.length: ${sortedArr.components_ts.length}', 1);
+		info('sortedArr.components_html.length: ${sortedArr.components_html.length}', 1);
+		info('sortedArr.components_spec.length: ${sortedArr.components_spec.length}', 1);
+		info('sortedArr.components_scss.length: ${sortedArr.components_scss.length}', 1);
+		info('sortedArr.typescript.length: ${sortedArr.typescript.length}', 1);
+		info('sortedArr.html.length: ${sortedArr.html.length}', 1);
 	}
 
 	function initArgs(?args:Array<String>) {
@@ -139,7 +202,7 @@ class Main {
 				}
 			}
 		} else {
-			warn('${Emoji.x} "$directory" does not exists');
+			// warn('${Emoji.x} "$directory" does not exists');
 		}
 	}
 
@@ -162,7 +225,7 @@ Lia-angular-stats (${Config.VERSION})
 
   --version / -v	: version number
   --help / -h		: show this help
-  --in / -i		: path to project folder
+  --in / -i 		: path to project folder
   --out / -o		: write readme (WIP)
   --force / -f		: force overwrite
   --dryrun / -d		: run without writing files
