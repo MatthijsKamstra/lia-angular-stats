@@ -6,4 +6,5 @@ class Folder {
 	public static var BIN:String;
 	public static var DIST:String;
 	public static var ASSETS:String;
+	public static var EXPORT:String;
 }

@@ -1,3 +1,4 @@
+import convert.holiday.Video;
 import eval.luv.SockAddr.SocketType;
 import AST.SortedObj;
 import logger.Logger;
@@ -24,6 +25,7 @@ class Main {
 		startTime = Date.now();
 
 		initArgs(args);
+		initFolders();
 		checkAngular();
 
 		if (Config.PATH == '')
@@ -45,6 +47,12 @@ class Main {
 		mute('fileArr.length: ${fileArr.length}', 1);
 		mute('ignoreArr: $ignoreArr', 1);
 
+		info('OUTPUT DATA');
+		outputFiles();
+
+		info('OUTPUT SPECIFIC DATA');
+		new convert.holiday.Video(fileArr);
+
 		info('GET STATS');
 		// do something clever
 		statsFiles();
@@ -58,6 +66,18 @@ class Main {
 
 	function checkAngular() {
 		info('[WIP] Check for angular.json in the root of the folder');
+	}
+
+	function outputFiles() {
+		info('Output Files');
+
+		var md = '# files:\n';
+		for (i in 0...fileArr.length) {
+			var file = fileArr[i];
+			md += '${file}\n';
+		}
+
+		SaveFile.writeFile(Folder.EXPORT, 'files.md', md);
 	}
 
 	function statsFiles() {
@@ -158,16 +178,18 @@ class Main {
 		}
 	}
 
-	// function init() {
-	// 	Folder.PATH_FOLDER = Sys.getCwd();
-	// 	Folder.BIN = Path.join([Sys.getCwd(), 'bin']);
-	// 	Folder.DIST = Path.join([Sys.getCwd(), 'dist']);
-	// 	Folder.ASSETS = Path.join([Sys.getCwd(), 'assets']);
-	// 	// info('Folder.PATH_FOLDER: ${Folder.PATH_FOLDER}');
-	// 	// info(Folder.BIN);
-	// 	// info(Folder.DIST);
-	// 	// info('Folder.ASSETS: ${Folder.ASSETS}');
-	// }
+	function initFolders() {
+		Folder.ROOT_FOLDER = Sys.getCwd();
+		Folder.BIN = Path.join([Sys.getCwd(), 'bin']);
+		Folder.DIST = Path.join([Sys.getCwd(), 'dist']);
+		Folder.ASSETS = Path.join([Sys.getCwd(), 'assets']);
+		Folder.EXPORT = Path.join([Sys.getCwd(), 'export']);
+		info('Folder.ROOT_FOLDER: ${Folder.ROOT_FOLDER}', 1);
+		info(Folder.BIN, 1);
+		info(Folder.DIST, 1);
+		info('Folder.ASSETS: ${Folder.ASSETS}', 1);
+		info('Folder.EXPORT: ${Folder.EXPORT}', 1);
+	}
 
 	/**
 	 * [Description]

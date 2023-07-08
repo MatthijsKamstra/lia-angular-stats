@@ -2,3 +2,6 @@
 
 build.sh
 build1.sh
+
+# ignore export folder
+export/*
