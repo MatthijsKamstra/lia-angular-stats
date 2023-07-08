@@ -6,6 +6,8 @@ class Video {
 		var HOLIDAY = Folder.EXPORT + '/holiday';
 		var videoExtension = ['mkv', 'mov', 'mp4'];
 
+		var videoArr = [];
+
 		var md = '# Files:\n\n';
 		var md2 = '# Not Files:\n\n';
 		var sh = '#!/bin/sh\n\necho "Start converting videos"\nsay "Start converting videos"\n\n';
@@ -26,12 +28,15 @@ class Video {
 			if (isVideo != '') {
 				md += '- ${isVideo}\n';
 				sh += '${convertData(isVideo)}\n';
+				videoArr.push(isVideo);
 			}
 
 			if (isNotVideo != '') {
 				md2 += '- ${isNotVideo}\n';
 			}
 		}
+
+		warn('total nr of videos: ${videoArr.length}');
 
 		sh += '\n\necho "End converting videos"\nsay "End converting videos"\n\n';
 
