@@ -1,1 +1,4 @@
+# ignore build files
+
+build.sh
 build1.sh
