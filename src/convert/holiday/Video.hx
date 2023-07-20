@@ -11,6 +11,7 @@ class Video {
 		var md = '# Files:\n\n';
 		var md2 = '# Not Files:\n\n';
 		var sh = '#!/bin/sh\n\necho "Start converting videos"\nsay "Start converting videos"\n\n';
+		var sh2 = '#!/bin/sh\n\necho "Start converting videos"\nsay "Start converting videos"\n\n';
 
 		for (i in 0...fileArr.length) {
 			var file = fileArr[i].trim();
@@ -37,10 +38,16 @@ class Video {
 		}
 
 		warn('total nr of videos: ${videoArr.length}');
+		for (i in 0...videoArr.length) {
+			var file = videoArr[i];
+			sh2 += '${convertData(file)}\n';
+		}
 
 		sh += '\n\necho "End converting videos"\nsay "End converting videos"\n\n';
+		sh2 += '\n\necho "End converting videos"\nsay "End converting videos"\n\n';
 
-		SaveFile.writeFile(HOLIDAY, 'holiday_2023.sh', sh);
+		// SaveFile.writeFile(HOLIDAY, 'holiday_2023.sh', sh);
+		SaveFile.writeFile(HOLIDAY, 'holiday_2023_2.sh', sh2);
 		SaveFile.writeFile(HOLIDAY, 'files.md', md);
 		SaveFile.writeFile(HOLIDAY, 'files_not.md', md2);
 	}
