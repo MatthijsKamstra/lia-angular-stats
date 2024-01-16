@@ -1,9 +1,10 @@
-import eval.luv.SockAddr.SocketType;
 import AST.SortedObj;
-import logger.Logger;
 import const.Config;
+import eval.luv.SockAddr.SocketType;
 import haxe.io.Path;
+import logger.Logger;
 import sys.io.Process;
+import utils.Copyright;
 
 using StringTools;
 
@@ -16,6 +17,7 @@ class Main {
 	var endTime:Date;
 
 	var sortedArr:SortedObj = {};
+	var missingSortedArr:SortedObj = {};
 
 	public function new(?args:Array<String>) {
 		// Sys.command('clear'); // will produce a `TERM environment variable not set.`
@@ -49,6 +51,9 @@ class Main {
 		// do something clever
 		statsFiles();
 
+		// check files
+		checkCopyright();
+
 		// check time again
 		endTime = Date.now();
 
@@ -63,6 +68,16 @@ class Main {
 	function statsFiles() {
 		info('Stats Files');
 		sortedArr = {
+			components_ts: [],
+			components_html: [],
+			components_scss: [],
+			components_spec: [],
+			services_ts: [],
+			services_spec: [],
+			typescript: [],
+			html: [],
+		};
+		missingSortedArr = {
 			components_ts: [],
 			components_html: [],
 			components_scss: [],
@@ -116,6 +131,50 @@ class Main {
 		info('sortedArr.components_scss.length: ${sortedArr.components_scss.length}', 1);
 		info('sortedArr.typescript.length: ${sortedArr.typescript.length}', 1);
 		info('sortedArr.html.length: ${sortedArr.html.length}', 1);
+	}
+
+	function checkCopyright() {
+		// test with
+		// setCopyright('/Users/matthijskamstra/Documents/workingdir/Alliander/web-net-management-2/src/app/pages/devices-o-without-organisation/devices-o-without-organisation.component.ts', true);
+		// `component.ts`
+		for (i in 0...sortedArr.components_ts.length) {
+			var path = sortedArr.components_ts[i];
+			// trace(path);
+			var originalContent = sys.io.File.getContent(path);
+			if (originalContent.indexOf('Copyright 2014') == -1) {
+				// warn(path + ' doesn\'t have a copyright');
+				missingSortedArr.components_ts.push(path);
+				setCopyright(path, true);
+			}
+		}
+		warn('Components.ts without Copyright: ' + missingSortedArr.components_ts.length);
+		warn('Components.ts with Copyright: ' + (sortedArr.components_ts.length - missingSortedArr.components_ts.length));
+		// setCopyright('/Users/matthijskamstra/Documents/workingdir/Alliander/web-net-management-2/src/app/pages/devices-o-without-organisation/devices-o-without-organisation.component.html',	true);
+		// `component.html`
+		for (i in 0...sortedArr.components_html.length) {
+			var path = sortedArr.components_html[i];
+			// trace(path);
+			var originalContent = sys.io.File.getContent(path);
+			if (originalContent.indexOf('Copyright 2014') == -1) {
+				// warn(path + ' doesn\'t have a copyright');
+				missingSortedArr.components_html.push(path);
+				setCopyright(path, true);
+			}
+		}
+		warn('Components.html without Copyright: ' + missingSortedArr.components_html.length);
+		warn('Components.html with Copyright: ' + (sortedArr.components_html.length - missingSortedArr.components_html.length));
+	}
+
+	function setCopyright(path:String, overwrite:Bool = false) {
+		var arr = path.split('.');
+		var ext = arr[arr.length - 1];
+		var originalContent = sys.io.File.getContent(path);
+		var str = Copyright.init(ext) + '\n\n' + originalContent;
+		if (overwrite) {
+			sys.io.File.saveContent(path, str);
+		} else {
+			warn(path + ' doesn\'t have a copyright');
+		}
 	}
 
 	function initArgs(?args:Array<String>) {
