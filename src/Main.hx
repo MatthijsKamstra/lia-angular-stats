@@ -1,9 +1,6 @@
 import AST.SortedObj;
 import const.Config;
-import eval.luv.SockAddr.SocketType;
 import haxe.io.Path;
-import logger.Logger;
-import sys.io.Process;
 import utils.Copyright;
 
 using StringTools;
@@ -51,8 +48,8 @@ class Main {
 		info('OUTPUT DATA');
 		outputFiles();
 
-		info('OUTPUT SPECIFIC DATA');
-		new convert.holiday.Video(fileArr);
+		// info('OUTPUT SPECIFIC DATA');
+		// new convert.holiday.Video(fileArr);
 
 		info('GET STATS');
 		// do something clever
@@ -60,6 +57,8 @@ class Main {
 
 		// check files
 		checkCopyright();
+		// new convert.alliander.CopyrightAdd(sortedArr.components_ts);
+		// new convert.alliander.CopyrightAdd(sortedArr.components_html);
 
 		// check time again
 		endTime = Date.now();
