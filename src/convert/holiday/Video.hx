@@ -1,10 +1,12 @@
 package convert.holiday;
 
 class Video {
+	var year = Date.now().getFullYear();
+
 	public function new(fileArr:Array<String>) {
 		// trace('Video');
-		var HOLIDAY = Folder.EXPORT + '/holiday';
-		var videoExtension = ['mkv', 'mov', 'mp4'];
+		var HOLIDAY = Folder.EXPORT + '/holiday${year}';
+		var videoExtension = ['mkv', 'mov', 'mp4', 'flv'];
 
 		var videoArr = [];
 
@@ -47,7 +49,7 @@ class Video {
 		sh2 += '\n\necho "End converting videos"\nsay "End converting videos"\n\n';
 
 		// SaveFile.writeFile(HOLIDAY, 'holiday_2023.sh', sh);
-		SaveFile.writeFile(HOLIDAY, 'holiday_2023_2.sh', sh2);
+		SaveFile.writeFile(HOLIDAY, 'holiday_${year}.sh', sh2);
 		SaveFile.writeFile(HOLIDAY, 'files.md', md);
 		SaveFile.writeFile(HOLIDAY, 'files_not.md', md2);
 	}
@@ -60,7 +62,7 @@ class Video {
 		out += '\n# ${fileName}\n';
 		out += 'say "${fileName.replace('_', ' ')}"\n';
 
-		out += 'ffmpeg -i ${convertPathEscaped(videoPath)} -vf "scale=(iw*sar)*max(720/(iw*sar)\\,405/ih):ih*max(720/(iw*sar)\\,405/ih), crop=720:405" -c:v mpeg4 -q:v 7 -c:a libmp3lame -q:a 4 ~/Movies/output_2023/${fileName}.mp4';
+		out += 'ffmpeg -i ${convertPathEscaped(videoPath)} -vf "scale=(iw*sar)*max(720/(iw*sar)\\,405/ih):ih*max(720/(iw*sar)\\,405/ih), crop=720:405" -c:v mpeg4 -q:v 7 -c:a libmp3lame -q:a 4 ~/Movies/output_${year}/${fileName}.mp4';
 		return out;
 	}
 

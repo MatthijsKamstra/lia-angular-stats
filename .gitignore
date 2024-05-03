@@ -5,3 +5,5 @@ build1.sh
 
 # ignore export folder
 export/*
+build_holiday.hxml
+src/MainHoliday.hx
