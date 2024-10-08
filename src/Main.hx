@@ -152,6 +152,7 @@ class Main {
 	}
 
 	function checkCopyright() {
+		var CHECK_STR = Copyright.checkForValue();
 		// test with
 		// setCopyright('/Users/matthijskamstra/Documents/workingdir/Alliander/web-net-management-2/src/app/pages/devices-o-without-organisation/devices-o-without-organisation.component.ts', true);
 		// `component.ts`
@@ -159,24 +160,63 @@ class Main {
 			var path = sortedArr.components_ts[i];
 			// trace(path);
 			var originalContent = sys.io.File.getContent(path);
-			if (originalContent.indexOf('Copyright 2014') == -1) {
+			if (originalContent.indexOf(CHECK_STR) == -1) {
 				// warn(path + ' doesn\'t have a copyright');
 				missingSortedArr.components_ts.push(path);
 				setCopyright(path, true);
+			} else {
+				// CHECK_STR ('Copyright ') is in the document.
+				// but is it the correct copyright
+				if (originalContent.indexOf(Copyright.shouldBe()) == -1) {
+					warn('not the correct copyright! ${path}');
+					// not going to win prices here... but will work for now
+					setCopyright(path, true);
+				}
 			}
 		}
 		warn('Components.ts without Copyright: ' + missingSortedArr.components_ts.length);
 		warn('Components.ts with Copyright: ' + (sortedArr.components_ts.length - missingSortedArr.components_ts.length));
+
+		// `component.spec.ts`
+		for (i in 0...sortedArr.components_spec.length) {
+			var path = sortedArr.components_spec[i];
+			// trace(path);
+			var originalContent = sys.io.File.getContent(path);
+			if (originalContent.indexOf(CHECK_STR) == -1) {
+				// warn(path + ' doesn\'t have a copyright');
+				missingSortedArr.components_spec.push(path);
+				setCopyright(path, true);
+			} else {
+				// CHECK_STR ('Copyright ') is in the document.
+				// but is it the correct copyright
+				if (originalContent.indexOf(Copyright.shouldBe()) == -1) {
+					warn('not the correct copyright! ${path}');
+					// not going to win prices here... but will work for now
+					setCopyright(path, true);
+				}
+			}
+		}
+		warn('Components.spec.ts without Copyright: ' + missingSortedArr.components_spec.length);
+		warn('Components.spec.ts with Copyright: ' + (sortedArr.components_spec.length - missingSortedArr.components_spec.length));
+
 		// setCopyright('/Users/matthijskamstra/Documents/workingdir/Alliander/web-net-management-2/src/app/pages/devices-o-without-organisation/devices-o-without-organisation.component.html',	true);
 		// `component.html`
 		for (i in 0...sortedArr.components_html.length) {
 			var path = sortedArr.components_html[i];
 			// trace(path);
 			var originalContent = sys.io.File.getContent(path);
-			if (originalContent.indexOf('Copyright 2014') == -1) {
+			if (originalContent.indexOf(CHECK_STR) == -1) {
 				// warn(path + ' doesn\'t have a copyright');
 				missingSortedArr.components_html.push(path);
 				setCopyright(path, true);
+			} else {
+				// CHECK_STR ('Copyright ') is in the document.
+				// but is it the correct copyright
+				if (originalContent.indexOf(Copyright.shouldBe()) == -1) {
+					warn('not the correct copyright! ${path}');
+					// not going to win prices here... but will work for now
+					setCopyright(path, true);
+				}
 			}
 		}
 		warn('Components.html without Copyright: ' + missingSortedArr.components_html.length);
@@ -187,6 +227,8 @@ class Main {
 		var arr = path.split('.');
 		var ext = arr[arr.length - 1];
 		var originalContent = sys.io.File.getContent(path);
+		// TODO: replace "old" copyright if exists
+		// originalContent.removeCopyright();
 		var str = Copyright.init(ext) + '\n\n' + originalContent;
 		if (overwrite) {
 			sys.io.File.saveContent(path, str);
@@ -196,8 +238,8 @@ class Main {
 	}
 
 	function initArgs(?args:Array<String>) {
-		var args:Array<String> = args;
 		info('SETTINGS');
+		var args:Array<String> = args;
 
 		if (args.length == 0)
 			args.push('-h');
@@ -236,14 +278,15 @@ class Main {
 	}
 
 	function initFolders() {
+		info('FOLDER');
 		Folder.ROOT_FOLDER = Sys.getCwd();
 		Folder.BIN = Path.join([Sys.getCwd(), 'bin']);
 		Folder.DIST = Path.join([Sys.getCwd(), 'dist']);
 		Folder.ASSETS = Path.join([Sys.getCwd(), 'assets']);
 		Folder.EXPORT = Path.join([Sys.getCwd(), 'export']);
 		info('Folder.ROOT_FOLDER: ${Folder.ROOT_FOLDER}', 1);
-		info(Folder.BIN, 1);
-		info(Folder.DIST, 1);
+		info('Folder.BIN: ${Folder.BIN}', 1);
+		info('Folder.DIST: ${Folder.DIST}', 1);
 		info('Folder.ASSETS: ${Folder.ASSETS}', 1);
 		info('Folder.EXPORT: ${Folder.EXPORT}', 1);
 	}
@@ -311,7 +354,6 @@ Lia-angular-stats (${Config.VERSION})
   --debug			: write test with some extra debug information
 ----------------------------------------------------
 ');
-
 	}
 
 	static public function main() {
